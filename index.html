@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent Learning Hub — AI Agent 学习路线与资料库</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  line-height:1.75;color:#1a1a2e;
+  --bg:#fff;--bg2:#f8f9fa;--bg3:#e9ecef;--text:#1a1a2e;--text2:#495057;--text3:#6c757d;
+  --border:#dee2e6;--accent:#2563eb;--accent2:#3b82f6;--accent-bg:#eff6ff;
+  --gradient:linear-gradient(135deg,#2563eb,#7c3aed);--radius:8px;--shadow:0 1px 3px rgba(0,0,0,.08);
+  --code-bg:#f1f5f9;--link:#2563eb;--danger:#dc2626;--success:#16a34a;--warn:#d97706;
+  --tbl-stripe:#f8fafc;--tag-bg:#e0e7ff;--tag-text:#3730a3;
+  background:var(--bg);transition:background .3s,color .3s
+}
+body.dark{
+  --bg:#0f172a;--bg2:#1e293b;--bg3:#334155;--text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
+  --border:#334155;--accent:#60a5fa;--accent2:#93c5fd;--accent-bg:#1e3a5f;
+  --gradient:linear-gradient(135deg,#3b82f6,#a78bfa);--code-bg:#1e293b;
+  --link:#60a5fa;--tbl-stripe:#1a2332;--tag-bg:#312e81;--tag-text:#c7d2fe
+}
+a{color:var(--link);text-decoration:none;transition:color .2s}
+a:hover{text-decoration:underline;color:var(--accent2)}
+.sidebar{
+  position:fixed;top:0;left:0;width:260px;height:100vh;background:var(--bg2);
+  border-right:1px solid var(--border);overflow-y:auto;z-index:100;
+  transition:transform .3s;padding:20px 0
+}
+.sidebar-header{padding:16px 20px 20px;border-bottom:1px solid var(--border);margin-bottom:12px}
+.sidebar-header h1{font-size:18px;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sidebar-header p{font-size:12px;color:var(--text3);margin-top:4px}
+.sidebar nav{padding:0 12px}
+.sidebar a{display:block;padding:8px 12px;border-radius:6px;font-size:13px;color:var(--text2);transition:all .15s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sidebar a:hover,.sidebar a.active{background:var(--accent-bg);color:var(--accent);text-decoration:none}
+.sidebar a.sub{padding-left:28px;font-size:12px}
+.sidebar .section-title{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);padding:12px 12px 6px;font-weight:600}
+.main{margin-left:260px;max-width:960px;padding:40px 48px 80px}
+.hero{padding:48px 0 32px}
+.hero h1{font-size:36px;font-weight:800;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.3}
+.hero .desc{font-size:17px;color:var(--text2);margin-top:12px;max-width:640px}
+.hero .meta{margin-top:16px;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.hero .badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:500;background:var(--accent-bg);color:var(--accent)}
+section{margin-top:48px}
+section h2{font-size:24px;font-weight:700;margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid var(--accent);display:flex;align-items:center;gap:10px}
+section h3{font-size:18px;font-weight:600;margin:24px 0 12px;color:var(--text)}
+section h4{font-size:15px;font-weight:600;margin:20px 0 8px;color:var(--text2)}
+.table-wrap{overflow-x:auto;margin:16px 0;border-radius:var(--radius);border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{background:var(--bg2);padding:10px 14px;text-align:left;font-weight:600;font-size:13px;color:var(--text2);border-bottom:2px solid var(--border);white-space:nowrap}
+td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tbody tr:hover{background:var(--accent-bg)}
+tbody tr:nth-child(even){background:var(--tbl-stripe)}
+tbody tr:nth-child(even):hover{background:var(--accent-bg)}
+.todo-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:15px}
+.todo-item:last-child{border-bottom:none}
+.todo-item input[type=checkbox]{margin-top:3px;width:18px;height:18px;accent-color:var(--accent);cursor:pointer;flex-shrink:0}
+.todo-item input[type=checkbox]:checked + label{text-decoration:line-through;color:var(--text3)}
+.todo-item label{cursor:pointer;flex:1}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin:16px 0}
+.card{padding:20px;border-radius:var(--radius);border:1px solid var(--border);background:var(--bg);transition:all .2s}
+.card:hover{border-color:var(--accent);box-shadow:0 4px 12px rgba(0,0,0,.06)}
+.card h4{font-size:15px;margin:0 0 8px;color:var(--text)}
+.card p{font-size:13px;color:var(--text2);line-height:1.6}
+.pill{display:inline-block;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:500;background:var(--tag-bg);color:var(--tag-text);margin:2px 4px 2px 0}
+.callout{padding:16px 20px;border-radius:var(--radius);margin:16px 0;font-size:14px;line-height:1.7;border-left:4px solid var(--accent);background:var(--accent-bg)}
+.callout.warn{border-color:var(--warn);background:#fffbeb}
+body.dark .callout.warn{background:#451a03}
+.callout ul,.callout ol{padding-left:20px}
+.callout li{margin:4px 0}
+.footer{margin-top:64px;padding-top:24px;border-top:1px solid var(--border);font-size:13px;color:var(--text3)}
+.topbar{display:none;position:sticky;top:0;z-index:99;background:var(--bg);border-bottom:1px solid var(--border);padding:12px 20px;align-items:center;gap:12px}
+.topbar h1{font-size:16px;font-weight:700;flex:1}
+.topbar button{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:6px 10px;cursor:pointer;font-size:18px;color:var(--text)}
+.theme-toggle{position:fixed;bottom:20px;left:20px;z-index:101;width:40px;height:40px;border-radius:50%;border:1px solid var(--border);background:var(--bg2);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:all .2s;color:var(--text)}
+.theme-toggle:hover{transform:scale(1.1);box-shadow:var(--shadow)}
+.back-top{position:fixed;bottom:70px;left:20px;z-index:101;width:40px;height:40px;border-radius:50%;border:1px solid var(--border);background:var(--bg2);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s;color:var(--text);opacity:0;pointer-events:none}
+.back-top.visible{opacity:1;pointer-events:auto}
+.back-top:hover{transform:scale(1.1)}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99}
+@media(max-width:860px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .overlay.open{display:block}
+  .main{margin-left:0;padding:20px 16px 60px}
+  .topbar{display:flex}
+  .hero h1{font-size:26px}
+  .theme-toggle,.back-top{left:auto;right:16px}
+  .theme-toggle{bottom:20px}
+  .back-top{bottom:70px}
+  section h2{font-size:20px}
+  table{font-size:13px}
+  th,td{padding:8px 10px}
+}
+@media print{
+  .sidebar,.topbar,.theme-toggle,.back-top,.overlay{display:none!important}
+  .main{margin-left:0;padding:0}
+  body{color:#000;background:#fff}
+}
+</style>
+</head>
+<body>
+<aside class="sidebar" id="sidebar">
+<div class="sidebar-header">
+<h1>🤖 Agent Learning Hub</h1>
+<p>AI Agent 学习路线与资料库</p>
+</div>
+<nav>
+<a href="#hero">🏠 首页概览</a>
+<a href="#how-to-use">📖 如何使用</a>
+<a href="#what-to-learn">🎯 优先学习</a>
+<div class="section-title">📋 学习路线</div>
+<a href="#stage0" class="sub">Stage 0 · 理解 Agent</a>
+<a href="#stage1" class="sub">Stage 1 · 最小 Agent Loop</a>
+<a href="#stage2" class="sub">Stage 2 · 工具/RAG/记忆</a>
+<a href="#stage3" class="sub">Stage 3 · Agent Harness</a>
+<a href="#stage4" class="sub">Stage 4 · 多 Agent 协作</a>
+<a href="#stage5" class="sub">Stage 5 · Skills & 协议</a>
+<a href="#stage6" class="sub">Stage 6 · 浏览器 Agent</a>
+<a href="#stage7" class="sub">Stage 7 · 评测与安全</a>
+<a href="#stage8" class="sub">Stage 8 · 交付真实 Agent</a>
+<div class="section-title">🪜 项目阶梯</div>
+<a href="#project-ladder">11 级项目</a>
+<div class="section-title">📚 精选资源</div>
+<a href="#official-guides" class="sub">官方指南</a>
+<a href="#project-map" class="sub">项目地图</a>
+<a href="#skills-protocols" class="sub">Skills & 协议</a>
+<a href="#modern-systems" class="sub">现代 Agent 系统</a>
+<a href="#papers" class="sub">论文精选</a>
+<a href="#github-repos" class="sub">GitHub 仓库</a>
+<a href="#blogs" class="sub">优质博客</a>
+<a href="#claude-code-path" class="sub">Claude Code 学习路径</a>
+</nav>
+</aside>
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+<div class="topbar"><button onclick="openSidebar()" aria-label="菜单">☰</button><h1>Agent Learning Hub</h1><button onclick="toggleTheme()" aria-label="切换主题">🌓</button></div>
+<button class="theme-toggle" onclick="toggleTheme()">Toggle</button>
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">Top</button>
+<main class="main">
+
+<section id="hero" class="hero">
+<h1>🤖 Agent Learning Hub</h1>
+<p class="desc">一份精选的 AI Agent 学习路线，为想构建有用、可靠 agent 的人准备——不收集随机链接，而是整理成一份可以照着执行的 todo list。</p>
+<p style="color:var(--text2);margin-top:8px;font-size:14px">这个仓库只维护一个核心展示面：README。目标是把社区里优秀分享、官方博客、论文、开源项目和真实工程经验，整理成一份可以照着执行的 AI Agent 学习 todo list。</p>
+<div class="meta">
+<span class="badge">📦 Datawhale 社区</span>
+<span class="badge">⭐ 542 Stars</span>
+<span class="badge">🍴 48 Forks</span>
+<span class="badge">📝 MIT License</span>
+<a href="https://github.com/datawhalechina/Agent-Learning-Hub" target="_blank" class="badge" style="text-decoration:none">🔗 GitHub 仓库</a>
+</div>
+<p style="margin-top:16px;color:var(--text3);font-size:14px">
+维护者：<a href="https://github.com/jjyaoao" target="_blank">陈思州</a>（Datawhale 成员）
+<a href="https://www.xiaohongshu.com/user/profile/67b9cc34000000000e013517" target="_blank" style="margin-left:8px;font-size:12px;color:#e93c49">📕 小红书</a>
+</p>
+</section>
+
+<section id="how-to-use">
+<h2><span class="icon">📖</span> 如何使用</h2>
+<div class="card-grid">
+<div class="card"><h4>🆕 如果你是新手</h4><p>按「Learning Todo List」从上到下做，每完成一项就打勾。</p></div>
+<div class="card"><h4>⚡ 已经会 LLM 应用</h4><p>从 Stage 2 或 Stage 3 开始，重点补 Agent loop、工具调用、评测和工程化。</p></div>
+<div class="card"><h4>🛠 想做项目</h4><p>直接看「Project Ladder」，每一档做一个可运行作品。</p></div>
+<div class="card"><h4>🔍 只想找资料</h4><p>看「Curated Resources」，优先读官方文档和经典论文。</p></div>
+</div>
+</section>
+
+<section id="what-to-learn">
+<h2><span class="icon">🎯</span> 当前最值得学什么</h2>
+<p style="color:var(--text2);font-size:15px;margin-bottom:16px">
+Agent 领域变化很快。当前更值得投入的不是老式"角色扮演多 agent 框架"，而是这些更贴近真实生产力的方向：
+</p>
+<div class="table-wrap"><table>
+<thead><tr><th>优先级</th><th>学习方向</th><th>为什么</th></tr></thead>
+<tbody>
+<tr><td><span class="pill">1</span></td><td><strong>Claude Code / Codex 类 Coding Agent</strong></td><td>真实代码库、shell、文件编辑、测试、权限、上下文压缩，是最好的 agent 工程样本。</td></tr>
+<tr><td><span class="pill">2</span></td><td><strong>Agent Harness Engineering</strong></td><td>agent 的能力很大一部分来自 harness：工具协议、权限、状态、反馈、回放、CI、评测。</td></tr>
+<tr><td><span class="pill">3</span></td><td><strong>OpenClaw / Hermes 类 Personal Agent</strong></td><td>长运行、本地优先、跨应用、记忆、skills、消息入口——更像"个人操作系统"。</td></tr>
+<tr><td><span class="pill">4</span></td><td><strong>Skills / MCP / A2A / ACP</strong></td><td>skills 负责能力复用，MCP 连接工具，A2A 连接 agent，ACP 连接宿主应用。</td></tr>
+<tr><td><span class="pill">5</span></td><td><strong>评测与安全（Evaluation & Safety）</strong></td><td>没有 eval、trace、权限边界的 agent 只能算 demo。</td></tr>
+</tbody>
+</table></div>
+<div class="callout warn">
+⚠️ <strong>不建议</strong>把精力重押在已经泛化成模板的老式 crew/role-play 框架上。它们可以了解，但不应成为主线。
+</div>
+</section>
+
+<section id="learning-todo">
+<h2><span class="icon">📋</span> Learning Todo List</h2>
+<p style="color:var(--text2);margin-bottom:24px">按 Stage 0 → 8 循序渐进，每完成一项就打勾 ✅</p>
+
+<h3 id="stage0">Stage 0：理解什么是 Agent</h3>
+<div class="todo-list" data-stage="0">
+<div class="todo-item"><input type="checkbox" id="t0-1"><label for="t0-1">区分 chatbot、workflow、agent、multi-agent。</label></div>
+<div class="todo-item"><input type="checkbox" id="t0-2"><label for="t0-2">理解 agent 的基本循环：observe → think → act → observe。</label></div>
+<div class="todo-item"><input type="checkbox" id="t0-3"><label for="t0-3">明白什么时候<strong>不该</strong>用 agent：任务可预测、流程稳定、普通脚本能解决时，agent 反而增加不确定性。</label></div>
+<div class="todo-item"><input type="checkbox" id="t0-4"><label for="t0-4">读完 <a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank">Anthropic: Building effective agents</a>。</label></div>
+<div class="todo-item"><input type="checkbox" id="t0-5"><label for="t0-5">读完 <a href="https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/" target="_blank">OpenAI: A practical guide to building agents</a>。</label></div>
+</div>
+<div class="callout">📝 <strong>产出：</strong>写一页短笔记，回答「我的场景为什么需要 agent，而不是普通 workflow？」</div>
+
+<h3 id="stage1">Stage 1：构建最小 Agent Loop</h3>
+<div class="todo-list" data-stage="1">
+<div class="todo-item"><input type="checkbox" id="t1-1"><label for="t1-1">会用一个 LLM API 完成普通对话。</label></div>
+<div class="todo-item"><input type="checkbox" id="t1-2"><label for="t1-2">会让模型输出结构化 JSON。</label></div>
+<div class="todo-item"><input type="checkbox" id="t1-3"><label for="t1-3">会定义一个工具函数，例如 search、calculator、read_file。</label></div>
+<div class="todo-item"><input type="checkbox" id="t1-4"><label for="t1-4">会解析模型的 tool call / function call。</label></div>
+<div class="todo-item"><input type="checkbox" id="t1-5"><label for="t1-5">会执行工具，并把工具结果喂回模型。</label></div>
+<div class="todo-item"><input type="checkbox" id="t1-6"><label for="t1-6">会给 agent loop 加最大步数、超时和错误处理。</label></div>
+</div>
+<p style="font-size:14px;color:var(--text2);margin-top:8px">
+推荐阅读：
+<a href="https://platform.openai.com/docs/guides/function-calling" target="_blank">OpenAI Function Calling</a> ·
+<a href="https://ai.google.dev/gemini-api/docs/function-calling" target="_blank">Gemini API Function Calling</a> ·
+<a href="https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/overview" target="_blank">Claude Tool Use</a>
+</p>
+<div class="callout">📝 <strong>产出：</strong>一个 50-150 行的最小 agent，可以选择工具、执行工具、返回最终答案。</div>
+
+<h3 id="stage2">Stage 2：工具使用、RAG 和记忆</h3>
+<div class="todo-list" data-stage="2">
+<div class="todo-item"><input type="checkbox" id="t2-1"><label for="t2-1">会做检索增强生成：chunk、embed、retrieve、answer with citations。</label></div>
+<div class="todo-item"><input type="checkbox" id="t2-2"><label for="t2-2">会把搜索、数据库、文件、浏览器、代码执行接成工具。</label></div>
+<div class="todo-item"><input type="checkbox" id="t2-3"><label for="t2-3">会区分短期上下文、会话记忆、长期记忆。</label></div>
+<div class="todo-item"><input type="checkbox" id="t2-4"><label for="t2-4">会处理工具失败、空结果、重复调用、幻觉引用。</label></div>
+<div class="todo-item"><input type="checkbox" id="t2-5"><label for="t2-5">会让 agent 在回答里给出来源或证据。</label></div>
+</div>
+<p style="font-size:14px;color:var(--text2);margin-top:8px">
+推荐阅读：
+<a href="https://docs.llamaindex.ai/en/stable/use_cases/agents/" target="_blank">LlamaIndex Agents</a> ·
+<a href="https://docs.langchain.com/" target="_blank">LangChain Docs</a> ·
+<a href="https://ai.google.dev/gemini-api/docs/code-execution" target="_blank">Gemini API Code Execution</a> ·
+<a href="https://modelcontextprotocol.io/" target="_blank">Model Context Protocol</a>
+</p>
+<div class="table-wrap" style="margin-top:12px"><table>
+<thead><tr><th>项目</th><th>为什么适合 Stage 2</th></tr></thead>
+<tbody>
+<tr><td><a href="https://github.com/assafelovic/gpt-researcher" target="_blank">GPT Researcher</a></td><td>最接近"资料研究助手"的成品：搜索、抓取、筛选、引用、生成长报告。</td></tr>
+<tr><td><a href="https://github.com/langchain-ai/open_deep_research" target="_blank">Open Deep Research</a></td><td>LangGraph 写的 deep research 示例，适合学多轮搜索、状态管理和引用输出。</td></tr>
+<tr><td><a href="https://github.com/stanford-oval/storm" target="_blank">STORM</a></td><td>Stanford OVAL 的研究写作系统，适合学 outline、question asking、多视角资料综合。</td></tr>
+<tr><td><a href="https://github.com/khoj-ai/khoj" target="_blank">Khoj</a></td><td>个人 second brain，适合学本地文档、网页、语义搜索和长期记忆。</td></tr>
+<tr><td><a href="https://github.com/onyx-dot-app/onyx" target="_blank">Onyx</a></td><td>企业级 RAG/search assistant，适合学 connectors、hybrid search、权限和生产化。</td></tr>
+<tr><td><a href="https://github.com/Mintplex-Labs/anything-llm" target="_blank">AnythingLLM</a></td><td>本地 RAG + agents 产品，适合初学者快速理解完整应用形态。</td></tr>
+<tr><td><a href="https://github.com/infiniflow/ragflow" target="_blank">RAGFlow</a></td><td>文档理解型 RAG 引擎，适合学 ingestion、chunking、retrieval、grounded answer。</td></tr>
+<tr><td><a href="https://github.com/mem0ai/mem0" target="_blank">mem0</a></td><td>记忆层组件，适合学如何给 agent 加长期 memory。</td></tr>
+<tr><td><a href="https://github.com/letta-ai/letta" target="_blank">Letta</a></td><td>面向 stateful agents 的 memory/context 平台，适合学上下文管理。</td></tr>
+</tbody>
+</table></div>
+<div class="callout">📝 <strong>产出：</strong>一个资料研究助手，输入主题后自动搜索、筛选、总结并输出引用链接。</div>
+
+<h3 id="stage3">Stage 3：深入研究一个现代 Agent Harness</h3>
+<p style="color:var(--text2);margin-bottom:12px">先选一个现代 agent 系统学深。这里的重点不是"框架 API 怎么调"，而是它如何组织工具、上下文、权限、状态、日志、子任务和反馈。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>系统</th><th>最适合</th><th>学这个如果你想要……</th></tr></thead>
+<tbody>
+<tr><td><a href="https://code.claude.com/docs/en/overview" target="_blank">Claude Code Docs</a></td><td>Coding agent 产品</td><td>学真实 coding agent 的 CLI、工具、权限、hooks、subagents、MCP。</td></tr>
+<tr><td><a href="https://github.com/shareAI-lab/learn-claude-code" target="_blank">learn-claude-code</a></td><td>从零构建 agent harness</td><td>从 0 到 1 复刻 Claude Code-like harness。</td></tr>
+<tr><td><a href="https://github.com/shareAI-lab/claw0" target="_blank">claw0</a></td><td>从零构建 OpenClaw gateway</td><td>从 agent loop 一路构建 session、channel、gateway、memory、heartbeat、delivery、resilience、concurrency。</td></tr>
+<tr><td><a href="https://github.com/datawhalechina/hello-agents" target="_blank">hello-agents</a></td><td>中文 agent 教程</td><td>从零开始构建智能体，适合系统补 Agent 原理与实践。</td></tr>
+<tr><td><a href="https://github.com/openclaw/openclaw" target="_blank">OpenClaw</a></td><td>本地优先的个人 agent</td><td>学本地长运行 agent、skills、消息入口、系统工具和安全边界。</td></tr>
+<tr><td><a href="https://github.com/NousResearch/hermes-agent" target="_blank">Hermes Agent</a></td><td>自托管成长型 agent</td><td>学长期记忆、skills、toolsets、多平台消息网关和迁移能力。</td></tr>
+<tr><td><a href="https://github.com/ttguy0707/CyberClaw" target="_blank">CyberClaw</a></td><td>透明 agent 架构</td><td>学全行为审计、两段式安全调用、双水位记忆和心跳任务。</td></tr>
+<tr><td><a href="https://langchain-ai.github.io/langgraph/" target="_blank">LangGraph</a></td><td>状态图编排</td><td>学状态图、可恢复执行和可控编排。</td></tr>
+</tbody>
+</table></div>
+<div class="todo-list" data-stage="3" style="margin-top:16px">
+<div class="todo-item"><input type="checkbox" id="t3-1"><label for="t3-1">读懂一个 agent harness 的目录结构。</label></div>
+<div class="todo-item"><input type="checkbox" id="t3-2"><label for="t3-2">找出它的 agent loop、tool registry、permission gate、session store、context compaction。</label></div>
+<div class="todo-item"><input type="checkbox" id="t3-3"><label for="t3-3">跑通它的最小示例，并加一个你自己的工具。</label></div>
+<div class="todo-item"><input type="checkbox" id="t3-4"><label for="t3-4">观察一次完整 trace，解释每一步为什么发生。</label></div>
+<div class="todo-item"><input type="checkbox" id="t3-5"><label for="t3-5">把同一个任务分别用「裸 agent loop」和「harness」实现，对比差异。</label></div>
+</div>
+<div class="callout">📝 <strong>产出：</strong>一个可调试的 agent harness demo，包含 README、运行步骤、示例输入输出和失败记录。</div>
+
+<h3 id="stage4">Stage 4：多 Agent 是协调，不是魔法</h3>
+<div class="todo-list" data-stage="4">
+<div class="todo-item"><input type="checkbox" id="t4-1"><label for="t4-1">理解 planner / executor / reviewer / critic / router 等常见角色。</label></div>
+<div class="todo-item"><input type="checkbox" id="t4-2"><label for="t4-2">学会用 supervisor 或 graph 管理多 agent，而不是让 agent 随便聊天。</label></div>
+<div class="todo-item"><input type="checkbox" id="t4-3"><label for="t4-3">会定义每个 agent 的职责边界、输入输出 schema、停止条件。</label></div>
+<div class="todo-item"><input type="checkbox" id="t4-4"><label for="t4-4">会处理循环、争论、任务漂移、上下文膨胀。</label></div>
+<div class="todo-item"><input type="checkbox" id="t4-5"><label for="t4-5">会判断什么时候单 agent 更好。</label></div>
+</div>
+<p style="font-size:14px;color:var(--text2);margin-top:8px">
+推荐阅读：
+<a href="https://code.claude.com/docs/en/sub-agents" target="_blank">Claude Code Subagents</a> ·
+<a href="https://code.claude.com/docs/en/hooks" target="_blank">Claude Code Hooks</a> ·
+<a href="https://google.github.io/adk-docs/" target="_blank">Google Agent Development Kit</a> ·
+<a href="https://google-a2a.github.io/A2A/specification/" target="_blank">Agent2Agent Protocol</a> ·
+<a href="https://agentclientprotocol.com/" target="_blank">Agent Client Protocol</a>
+</p>
+<div class="callout">📝 <strong>产出：</strong>一个小型多 agent 系统，例如 research → write → review → revise。</div>
+
+<h3 id="stage5">Stage 5：学习 Skills、协议和能力打包</h3>
+<p style="color:var(--text2);margin-bottom:12px">现代 agent 的能力不只来自模型和工具，也来自可复用的 skills。一个好的 skill 像一份小型操作手册：告诉 agent 什么时候使用、怎么使用、需要哪些脚本/资源、如何验证结果。</p>
+<div class="todo-list" data-stage="5">
+<div class="todo-item"><input type="checkbox" id="t5-1"><label for="t5-1">理解 Skill 和 Tool 的区别：tool 是可调用接口，skill 是可复用流程知识。</label></div>
+<div class="todo-item"><input type="checkbox" id="t5-2"><label for="t5-2">理解 Skill 和 Prompt 的区别：prompt 通常是一次性指令，skill 是可发现、可版本化、可分发的能力包。</label></div>
+<div class="todo-item"><input type="checkbox" id="t5-3"><label for="t5-3">理解 Skill 和 MCP 的区别：MCP 接入外部工具/数据源，skill 告诉 agent 如何完成一类任务。</label></div>
+<div class="todo-item"><input type="checkbox" id="t5-4"><label for="t5-4">阅读 Claude Code Skills 的文件结构和触发机制。</label></div>
+<div class="todo-item"><input type="checkbox" id="t5-5"><label for="t5-5">阅读 OpenClaw Skills 的加载、作用域和安全边界。</label></div>
+<div class="todo-item"><input type="checkbox" id="t5-6"><label for="t5-6">写一个最小 <code>SKILL.md</code>，包含 name、description、何时使用、步骤、验收标准。</label></div>
+<div class="todo-item"><input type="checkbox" id="t5-7"><label for="t5-7">给 skill 加一个脚本或模板文件，并说明 agent 什么时候才需要加载它。</label></div>
+<div class="todo-item"><input type="checkbox" id="t5-8"><label for="t5-8">给 skill 写一个 smoke test，验证它是否真的提升任务成功率。</label></div>
+</div>
+<p style="font-size:14px;color:var(--text2);margin-top:8px">
+推荐阅读：
+<a href="https://code.claude.com/docs/en/skills" target="_blank">Claude Code Skills</a> ·
+<a href="https://docs.claude.com/en/docs/agents-and-tools/agent-skills" target="_blank">Claude Agent Skills</a> ·
+<a href="https://code.claude.com/docs/en/agent-sdk/skills" target="_blank">Claude Code Agent SDK Skills</a> ·
+<a href="https://github.com/openclaw/openclaw/blob/main/docs/tools/skills.md" target="_blank">OpenClaw Skills</a> ·
+<a href="https://modelcontextprotocol.io/" target="_blank">Model Context Protocol</a> ·
+<a href="https://google-a2a.github.io/A2A/specification/" target="_blank">A2A</a> ·
+<a href="https://agentclientprotocol.com/" target="_blank">ACP</a>
+</p>
+<div class="callout">📝 <strong>产出：</strong>一个可复用 skill，例如 code-review、research-report、migration-helper、pdf-extraction 或 release-note-writer。</div>
+
+<h3 id="stage6">Stage 6：浏览器与 Computer-Use Agent</h3>
+<div class="todo-list" data-stage="6">
+<div class="todo-item"><input type="checkbox" id="t6-1"><label for="t6-1">理解 browser agent 和普通 API tool 的区别。</label></div>
+<div class="todo-item"><input type="checkbox" id="t6-2"><label for="t6-2">会用 Playwright 或 browser-use 做网页观察和点击。</label></div>
+<div class="todo-item"><input type="checkbox" id="t6-3"><label for="t6-3">会给浏览器操作加安全限制：不登录敏感账号、不越权、不绕过平台规则。</label></div>
+<div class="todo-item"><input type="checkbox" id="t6-4"><label for="t6-4">会处理页面变化、弹窗、加载失败、元素定位失败。</label></div>
+<div class="todo-item"><input type="checkbox" id="t6-5"><label for="t6-5">会记录截图、DOM、动作日志，方便复盘。</label></div>
+</div>
+<p style="font-size:14px;color:var(--text2);margin-top:8px">
+推荐阅读：
+<a href="https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/computer-use-tool" target="_blank">Claude Computer Use</a> ·
+<a href="https://github.com/browser-use/browser-use" target="_blank">browser-use</a> ·
+<a href="https://arxiv.org/abs/2307.13854" target="_blank">WebArena</a> ·
+<a href="https://arxiv.org/abs/2401.13649" target="_blank">VisualWebArena</a>
+</p>
+<div class="callout">📝 <strong>产出：</strong>一个只操作公开网页的 browser agent，例如打开网页、提取信息、生成摘要。</div>
+
+<h3 id="stage7">Stage 7：评测、可观测性与安全</h3>
+<div class="todo-list" data-stage="7">
+<div class="todo-item"><input type="checkbox" id="t7-1"><label for="t7-1">为 agent 准备固定测试集，而不是只看 demo。</label></div>
+<div class="todo-item"><input type="checkbox" id="t7-2"><label for="t7-2">记录成功率、失败原因、工具调用次数、成本、延迟。</label></div>
+<div class="todo-item"><input type="checkbox" id="t7-3"><label for="t7-3">会看 trace，知道失败发生在 prompt、工具、检索、模型还是状态管理。</label></div>
+<div class="todo-item"><input type="checkbox" id="t7-4"><label for="t7-4">给危险工具加人工确认，例如发邮件、删文件、付款、发布内容。</label></div>
+<div class="todo-item"><input type="checkbox" id="t7-5"><label for="t7-5">了解 prompt injection、data exfiltration、tool abuse 等风险。</label></div>
+<div class="todo-item"><input type="checkbox" id="t7-6"><label for="t7-6">会用回归测试防止 prompt 或工具改动后能力退化。</label></div>
+</div>
+<p style="font-size:14px;color:var(--text2);margin-top:8px">
+推荐阅读：
+<a href="https://platform.openai.com/docs/guides/evals" target="_blank">OpenAI Evals</a> ·
+<a href="https://openai.com/agent-platform/" target="_blank">OpenAI Agent Platform</a> ·
+<a href="https://docs.smith.langchain.com/" target="_blank">LangSmith</a> ·
+<a href="https://arxiv.org/abs/2308.03688" target="_blank">AgentBench</a> ·
+<a href="https://arxiv.org/abs/2310.06770" target="_blank">SWE-bench</a>
+</p>
+<div class="callout">📝 <strong>产出：</strong>一个 agent eval 表格，至少包含 20 个任务、期望结果、实际结果、失败分类。</div>
+
+<h3 id="stage8">Stage 8：交付真实 Agent</h3>
+<div class="todo-list" data-stage="8">
+<div class="todo-item"><input type="checkbox" id="t8-1"><label for="t8-1">有明确用户、明确任务、明确成功标准。</label></div>
+<div class="todo-item"><input type="checkbox" id="t8-2"><label for="t8-2">有日志、trace、错误重试、超时、成本上限。</label></div>
+<div class="todo-item"><input type="checkbox" id="t8-3"><label for="t8-3">有权限边界和人工确认机制。</label></div>
+<div class="todo-item"><input type="checkbox" id="t8-4"><label for="t8-4">有部署方式：CLI、Web app、Slack bot、GitHub Action 或后台任务。</label></div>
+<div class="todo-item"><input type="checkbox" id="t8-5"><label for="t8-5">有 README：怎么运行、怎么配置 key、怎么扩展工具、有哪些限制。</label></div>
+</div>
+<div class="callout">📝 <strong>产出：</strong>一个别人能 clone 下来跑的 agent 项目。</div>
+</section>
+
+<section id="project-ladder">
+<h2><span class="icon">🪜</span> Project Ladder · 项目阶梯</h2>
+<p style="color:var(--text2);margin-bottom:16px">从 Level 1 到 Level 11，每一级对应一个可运行的项目。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Level</th><th>项目</th><th>学到什么</th></tr></thead>
+<tbody>
+<tr><td><span class="pill">1</span></td><td><strong>Calculator Agent</strong></td><td>最小 tool call loop</td></tr>
+<tr><td><span class="pill">2</span></td><td><strong>Web Research Agent</strong></td><td>搜索、筛选、引用、总结</td></tr>
+<tr><td><span class="pill">3</span></td><td><strong>PDF QA Agent</strong></td><td>RAG、chunk、retrieval、citation</td></tr>
+<tr><td><span class="pill">4</span></td><td><strong>Coding Review Agent</strong></td><td>读取 diff、风险排序、测试建议</td></tr>
+<tr><td><span class="pill">5</span></td><td><strong>Browser Agent</strong></td><td>页面观察、点击、提取、失败恢复</td></tr>
+<tr><td><span class="pill">6</span></td><td><strong>Claude Code-like Nano Agent</strong></td><td>shell、文件编辑、权限、session、compact</td></tr>
+<tr><td><span class="pill">7</span></td><td><strong>OpenClaw-like Gateway</strong></td><td>channel、routing、session、memory、heartbeat、delivery</td></tr>
+<tr><td><span class="pill">8</span></td><td><strong>Reusable Skill Pack</strong></td><td>SKILL.md、脚本、模板、触发条件、smoke test</td></tr>
+<tr><td><span class="pill">9</span></td><td><strong>Multi-Agent Writer</strong></td><td>planner、writer、reviewer 协作</td></tr>
+<tr><td><span class="pill">10</span></td><td><strong>Personal Agent</strong></td><td>OpenClaw/Hermes-style 记忆、skills、消息入口</td></tr>
+<tr><td><span class="pill">11</span></td><td><strong>Production Harness</strong></td><td>evals、trace、权限、CI、runner、回放</td></tr>
+</tbody>
+</table></div>
+</section>
+
+<section id="curated-resources">
+<h2><span class="icon">📚</span> Curated Resources · 精选资源</h2>
+
+<h3 id="official-guides">官方指南与博客</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>资源</th><th>为什么重要</th></tr></thead>
+<tbody>
+<tr><td><a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank">Anthropic: Building effective agents</a></td><td>Agent 设计入门必读，讲清 workflow 和 agent 的边界。</td></tr>
+<tr><td><a href="https://code.claude.com/docs/en/overview" target="_blank">Claude Code Overview</a></td><td>当前最值得研究的 coding agent 产品文档入口。</td></tr>
+<tr><td><a href="https://code.claude.com/docs/en/sub-agents" target="_blank">Claude Code Subagents</a></td><td>学任务拆分、上下文隔离、专用子代理。</td></tr>
+<tr><td><a href="https://code.claude.com/docs/en/hooks" target="_blank">Claude Code Hooks</a></td><td>学如何拦截、校验和扩展 agent 行为。</td></tr>
+<tr><td><a href="https://docs.claude.com/en/docs/claude-code/github-actions" target="_blank">Claude Code GitHub Actions</a></td><td>学 coding agent 如何进入 PR / issue 工作流。</td></tr>
+<tr><td><a href="https://resources.anthropic.com/hubfs/Claude%20Code%20Advanced%20Patterns_%20Subagents%2C%20MCP%2C%20and%20Scaling%20to%20Real%20Codebases.pdf" target="_blank">Claude Code Advanced Patterns（PDF）</a></td><td>Anthropic 官方材料，覆盖 subagents、MCP 和真实代码库扩展。</td></tr>
+<tr><td><a href="https://openai.com/business/guides-and-resources/a-practical-guide-to-building-ai-agents/" target="_blank">OpenAI: A practical guide to building agents</a></td><td>面向产品和工程团队的 agent 落地指南。</td></tr>
+<tr><td><a href="https://openai.com/index/new-tools-for-building-agents/" target="_blank">OpenAI: New tools for building agents</a></td><td>Responses API、Agents SDK、工具和 tracing 的官方介绍。</td></tr>
+<tr><td><a href="https://platform.openai.com/docs/guides/agents-sdk/" target="_blank">OpenAI Agents SDK</a></td><td>OpenAI 原生 agent 开发入口。</td></tr>
+<tr><td><a href="https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/overview" target="_blank">Claude Tool Use</a></td><td>Claude 工具调用机制。</td></tr>
+<tr><td><a href="https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/computer-use-tool" target="_blank">Claude Computer Use</a></td><td>电脑操作类 agent 的官方参考。</td></tr>
+<tr><td><a href="https://ai.google.dev/gemini-api/docs/function-calling" target="_blank">Gemini Function Calling</a></td><td>Gemini 工具调用官方文档。</td></tr>
+<tr><td><a href="https://ai.google.dev/gemini-api/docs/code-execution" target="_blank">Gemini Code Execution</a></td><td>Gemini 代码执行工具。</td></tr>
+<tr><td><a href="https://google.github.io/adk-docs/" target="_blank">Google Agent Development Kit</a></td><td>Google 的 agent 开发框架。</td></tr>
+<tr><td><a href="https://modelcontextprotocol.io/" target="_blank">Model Context Protocol</a></td><td>Agent 连接工具和数据源的重要协议。</td></tr>
+</tbody>
+</table></div>
+
+<h3 id="project-map">项目地图</h3>
+<p style="color:var(--text2);margin-bottom:12px">项目不要按 star 数乱读，建议按学习目的分层：</p>
+<div class="table-wrap"><table>
+<thead><tr><th>层次</th><th>学习这些</th><th>学到</th></tr></thead>
+<tbody>
+<tr><td><strong>从零构建</strong></td><td><a href="https://github.com/shareAI-lab/learn-claude-code" target="_blank">learn-claude-code</a>、<a href="https://github.com/shareAI-lab/claw0" target="_blank">claw0</a>、<a href="https://github.com/datawhalechina/hello-agents" target="_blank">hello-agents</a></td><td>agent loop、tool registry、session、context compaction、gateway、trace、subagents。</td></tr>
+<tr><td><strong>个人 / 常驻 Agent</strong></td><td><a href="https://github.com/openclaw/openclaw" target="_blank">OpenClaw</a>、<a href="https://github.com/NousResearch/hermes-agent" target="_blank">Hermes Agent</a>、<a href="https://github.com/ttguy0707/CyberClaw" target="_blank">CyberClaw</a></td><td>长运行、skills、记忆、消息入口、权限、安全审计。</td></tr>
+<tr><td><strong>Coding Agents</strong></td><td><a href="https://code.claude.com/docs/en/overview" target="_blank">Claude Code</a>、<a href="https://github.com/openai/codex" target="_blank">OpenAI Codex</a>、<a href="https://github.com/opencode-ai/opencode" target="_blank">OpenCode</a>、<a href="https://github.com/All-Hands-AI/OpenHands" target="_blank">OpenHands</a>、<a href="https://github.com/SWE-agent/SWE-agent" target="_blank">SWE-agent</a></td><td>真实代码库编辑、shell、测试、sandbox、PR 工作流。</td></tr>
+<tr><td><strong>Deep Research / RAG</strong></td><td><a href="https://github.com/bytedance/deer-flow" target="_blank">DeerFlow</a>、<a href="https://docs.llamaindex.ai/" target="_blank">LlamaIndex</a></td><td>搜索、抓取、检索、rerank、引用、报告生成。</td></tr>
+<tr><td><strong>教程百科</strong></td><td><a href="https://github.com/NirDiamant/GenAI_Agents" target="_blank">GenAI_Agents</a>、<a href="https://github.com/datawhalechina/hello-agents" target="_blank">hello-agents</a>、<a href="https://github.com/huggingface/smolagents" target="_blank">smolagents</a>、<a href="https://github.com/NirDiamant/agents-towards-production" target="_blank">agents-towards-production</a></td><td>横向看 ReAct、Plan-and-Execute、Multi-Agent、production patterns。</td></tr>
+<tr><td><strong>浏览器 / 多模态</strong></td><td><a href="https://github.com/browser-use/browser-use" target="_blank">browser-use</a>、<a href="https://github.com/bytedance/UI-TARS-desktop" target="_blank">UI-TARS-desktop</a></td><td>浏览器/桌面操作、视觉理解、动作空间、失败恢复。</td></tr>
+</tbody>
+</table></div>
+
+<h3 id="skills-protocols">Skills、协议与工具</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>概念</th><th>学习来源</th><th>解决什么问题</th></tr></thead>
+<tbody>
+<tr><td><strong>Skills</strong></td><td><a href="https://code.claude.com/docs/en/skills" target="_blank">Claude Code Skills</a>、<a href="https://github.com/openclaw/openclaw/blob/main/docs/tools/skills.md" target="_blank">OpenClaw Skills</a></td><td>把一类任务的流程知识、脚本、模板和验收标准打包成可复用能力。</td></tr>
+<tr><td><strong>MCP</strong></td><td><a href="https://modelcontextprotocol.io/" target="_blank">Model Context Protocol</a></td><td>让 agent 标准化连接外部工具、数据源和服务。</td></tr>
+<tr><td><strong>A2A</strong></td><td><a href="https://google-a2a.github.io/A2A/specification/" target="_blank">Agent2Agent Protocol</a></td><td>让不同 agent 之间发现、通信和协作。</td></tr>
+<tr><td><strong>ACP</strong></td><td><a href="https://agentclientprotocol.com/" target="_blank">Agent Client Protocol</a></td><td>让编辑器、终端、IDE、宿主应用和 agent 之间形成统一接口。</td></tr>
+<tr><td><strong>Skill Quality</strong></td><td><a href="https://arxiv.org/abs/2603.15401" target="_blank">SWE-Skills-Bench</a>、<a href="https://arxiv.org/abs/2602.08004" target="_blank">Agent Skills analysis</a></td><td>评估 skills 是否真的提升成功率，而不是制造新的 prompt 噪声。</td></tr>
+</tbody>
+</table></div>
+
+<h3 id="modern-systems">现代 Agent 系统</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>系统</th><th>为什么有用</th></tr></thead>
+<tbody>
+<tr><td><a href="https://code.claude.com/docs/en/overview" target="_blank">Claude Code</a></td><td>学 coding agent 的产品化形态：shell、文件、权限、hooks、subagents、MCP。</td></tr>
+<tr><td><a href="https://github.com/shareAI-lab/learn-claude-code" target="_blank">learn-claude-code</a></td><td>从零构建 Claude Code-like nano agent，适合理解 harness engineering。</td></tr>
+<tr><td><a href="https://github.com/shareAI-lab/claw0" target="_blank">claw0</a></td><td>从零构建 OpenClaw-like agent gateway，覆盖 channel、routing、session、memory、delivery、concurrency。</td></tr>
+<tr><td><a href="https://github.com/datawhalechina/hello-agents" target="_blank">hello-agents</a></td><td>中文智能体系统教程，适合从零开始补齐 Agent 原理与实践。</td></tr>
+<tr><td><a href="https://github.com/openclaw/openclaw" target="_blank">OpenClaw</a></td><td>本地优先的个人 agent，适合研究长运行 agent 和系统级工具调用。</td></tr>
+<tr><td><a href="https://github.com/NousResearch/hermes-agent" target="_blank">Hermes Agent</a></td><td>自托管、长期记忆、skills、消息网关和 toolsets。</td></tr>
+<tr><td><a href="https://github.com/ttguy0707/CyberClaw" target="_blank">CyberClaw</a></td><td>透明可控 agent 架构，适合研究审计、两段式执行和安全边界。</td></tr>
+<tr><td><a href="https://github.com/bytedance/deer-flow" target="_blank">DeerFlow</a></td><td>字节开源 long-horizon SuperAgent harness，适合研究 Deep Research、报告、slides、网页、图像和视频生成。</td></tr>
+<tr><td><a href="https://github.com/huggingface/smolagents" target="_blank">smolagents</a></td><td>Hugging Face 轻量 agent 框架，CodeAgent 思路值得研究。</td></tr>
+<tr><td><a href="https://langchain-ai.github.io/langgraph/" target="_blank">LangGraph</a></td><td>状态图和可控 agent 编排，仍然值得作为工程基础学习。</td></tr>
+<tr><td><a href="https://github.com/QwenLM/Qwen-Agent" target="_blank">Qwen-Agent</a></td><td>国产模型生态里的工具调用、RAG、MCP agent 框架。</td></tr>
+<tr><td><a href="https://pydantic.dev/docs/ai/core-concepts/agent/" target="_blank">Pydantic AI</a></td><td>类型安全和结构化输出，适合生产 Python agent。</td></tr>
+</tbody>
+</table></div>
+
+<h4 style="margin-top:24px">Legacy / 可选框架</h4>
+<p style="color:var(--text2);margin-bottom:12px">这些项目仍有参考价值，但不建议作为当前学习主线。</p>
+<div class="table-wrap"><table>
+<thead><tr><th>框架</th><th>备注</th></tr></thead>
+<tbody>
+<tr><td><a href="https://docs.crewai.com/" target="_blank">CrewAI</a></td><td>可了解 role/task/crew 抽象，但很多场景已经被更强的 coding agent / harness 形态覆盖。</td></tr>
+<tr><td><a href="https://microsoft.github.io/autogen/" target="_blank">AutoGen</a></td><td>多 agent 对话框架经典项目，适合了解历史和论文，不必重押。</td></tr>
+<tr><td><a href="https://docs.langchain.com/" target="_blank">LangChain Agents</a></td><td>生态仍重要，但建议重点转向 LangGraph 和具体工程模式。</td></tr>
+</tbody>
+</table></div>
+
+<h3 id="papers">论文精选</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>论文</th><th>主题</th></tr></thead>
+<tbody>
+<tr><td><a href="https://arxiv.org/abs/2210.03629" target="_blank">ReAct</a></td><td>Reasoning + acting 的基础范式。</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2302.04761" target="_blank">Toolformer</a></td><td>模型学习何时调用工具。</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2303.11366" target="_blank">Reflexion</a></td><td>语言反馈和自我改进。</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2304.03442" target="_blank">Generative Agents</a></td><td>记忆、反思、规划驱动的模拟 agent。</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2305.16291" target="_blank">Voyager</a></td><td>开放世界中的长期学习 agent。</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2308.08155" target="_blank">AutoGen</a></td><td>多 agent 对话框架。</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2308.03688" target="_blank">AgentBench</a></td><td>Agent 能力评测。</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2307.13854" target="_blank">WebArena</a></td><td>真实网页环境下的 agent benchmark。</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2310.06770" target="_blank">SWE-bench</a></td><td>真实 GitHub issue 修复评测。</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2405.15793" target="_blank">SWE-agent</a></td><td>软件工程 agent 的 agent-computer interface。</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2604.14228" target="_blank">Dive into Claude Code</a></td><td>从系统设计角度分析 Claude Code 这类 coding agent 的 harness、权限、压缩和扩展机制。</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2605.13357" target="_blank">AI Harness Engineering</a></td><td>把 harness 作为 agent 能力来源来研究。</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2602.14690" target="_blank">Configuring Agentic AI Coding Tools</a></td><td>对 Claude Code、Codex、Gemini、Cursor 等 coding tools 的配置机制分析。</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2604.04759" target="_blank">Your Agent, Their Asset</a></td><td>OpenClaw 等本地 agent 的真实安全风险分析。</td></tr>
+</tbody>
+</table></div>
+
+<h3 id="github-repos">GitHub 仓库</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>仓库</th><th>为什么有用</th></tr></thead>
+<tbody>
+<tr><td><a href="https://github.com/datawhalechina/hello-agents" target="_blank">datawhalechina/hello-agents</a></td><td>中文智能体系统教程，从零开始构建智能体。</td></tr>
+<tr><td><a href="https://github.com/shareAI-lab/learn-claude-code" target="_blank">shareAI-lab/learn-claude-code</a></td><td>Bash is all you need，从 0 到 1 学 Claude Code-like agent harness。</td></tr>
+<tr><td><a href="https://github.com/shareAI-lab/claw0" target="_blank">shareAI-lab/claw0</a></td><td>从 0 到 1 学 OpenClaw-like gateway，10 个渐进章节覆盖 agent loop 到 concurrency。</td></tr>
+<tr><td><a href="https://github.com/openclaw/openclaw" target="_blank">openclaw/openclaw</a></td><td>研究本地个人 agent、skills、长运行任务、系统工具和权限边界。</td></tr>
+<tr><td><a href="https://github.com/NousResearch/hermes-agent" target="_blank">NousResearch/hermes-agent</a></td><td>研究自托管 agent、长期记忆、skills、toolsets、多平台消息网关。</td></tr>
+<tr><td><a href="https://github.com/ttguy0707/CyberClaw" target="_blank">ttguy0707/CyberClaw</a></td><td>研究透明 agent、安全审计、两段式执行、双水位记忆和心跳任务。</td></tr>
+<tr><td><a href="https://github.com/bytedance/deer-flow" target="_blank">bytedance/deer-flow</a></td><td>Deep Research / long-horizon agent，适合学习搜索、报告生成、沙箱、memory、skills、subagents、message gateway。</td></tr>
+<tr><td><a href="https://github.com/NirDiamant/GenAI_Agents" target="_blank">NirDiamant/GenAI_Agents</a></td><td>综合教程库，适合横向比较 ReAct、Plan-and-Execute、Multi-Agent 等实现方式。</td></tr>
+<tr><td><a href="https://github.com/NirDiamant/agents-towards-production" target="_blank">NirDiamant/agents-towards-production</a></td><td>production-grade agent 教程库，适合补工程化组件。</td></tr>
+<tr><td><a href="https://github.com/huggingface/smolagents" target="_blank">huggingface/smolagents</a></td><td>轻量 CodeAgent 风格框架，适合研究"让模型写代码执行动作"的范式。</td></tr>
+<tr><td><a href="https://github.com/openai/codex" target="_blank">openai/codex</a></td><td>OpenAI 开源 coding agent CLI，适合研究 sandbox、approval、CLI 产品形态。</td></tr>
+<tr><td><a href="https://github.com/opencode-ai/opencode" target="_blank">opencode-ai/opencode</a></td><td>终端优先的开源 coding agent，适合对照 Claude Code / Codex。</td></tr>
+<tr><td><a href="https://github.com/langchain-ai/langgraph" target="_blank">langchain-ai/langgraph</a></td><td>状态图和可控 agent 编排。</td></tr>
+<tr><td><a href="https://github.com/openai/openai-agents-python" target="_blank">openai/openai-agents-python</a></td><td>OpenAI Agents SDK Python。</td></tr>
+<tr><td><a href="https://github.com/QwenLM/Qwen-Agent" target="_blank">QwenLM/Qwen-Agent</a></td><td>Qwen 生态 agent 框架。</td></tr>
+<tr><td><a href="https://github.com/browser-use/browser-use" target="_blank">browser-use/browser-use</a></td><td>浏览器 agent 实战。</td></tr>
+<tr><td><a href="https://github.com/bytedance/UI-TARS-desktop" target="_blank">bytedance/UI-TARS-desktop</a></td><td>多模态桌面 agent stack，适合研究视觉 UI 操作。</td></tr>
+<tr><td><a href="https://github.com/SWE-agent/SWE-agent" target="_blank">SWE-agent/SWE-agent</a></td><td>软件工程 agent。</td></tr>
+<tr><td><a href="https://github.com/All-Hands-AI/OpenHands" target="_blank">All-Hands-AI/OpenHands</a></td><td>开源 coding agent。</td></tr>
+<tr><td><a href="https://github.com/microsoft/ai-agents-for-beginners" target="_blank">microsoft/ai-agents-for-beginners</a></td><td>系统化入门课程。</td></tr>
+<tr><td><a href="https://github.com/jjyaoao/HelloAgents" target="_blank">jjyaoao/HelloAgents</a></td><td>基于 OpenAI 原生 API 的生产级多智能体框架，覆盖 ToolResponse、上下文工程、会话持久化、子代理、TraceLogger 等。</td></tr>
+</tbody>
+</table></div>
+
+<h3 id="blogs">优质博客</h3>
+<div class="table-wrap"><table>
+<thead><tr><th>博客</th><th>为什么有用</th></tr></thead>
+<tbody>
+<tr><td><a href="https://lilianweng.github.io/posts/2023-06-23-agent/" target="_blank">Lilian Weng: LLM Powered Autonomous Agents</a></td><td>经典长文，系统整理 agent 架构、记忆、规划和工具使用。</td></tr>
+<tr><td><a href="https://simonwillison.net/tags/llms/" target="_blank">Simon Willison: AI/LLM writing</a></td><td>非常务实的 LLM 工程观察，适合补工程直觉。</td></tr>
+<tr><td><a href="https://blog.langchain.com/" target="_blank">LangChain Blog</a></td><td>LangGraph、LangSmith、agent 工程实践。</td></tr>
+<tr><td><a href="https://developers.googleblog.com/agent-development-kit-easy-to-build-multi-agent-applications/" target="_blank">Google Developers Blog: ADK</a></td><td>Google ADK 官方发布文章。</td></tr>
+</tbody>
+</table></div>
+
+<h3 id="claude-code-path">Claude Code 学习路径</h3>
+<p style="color:var(--text2);margin-bottom:12px">Claude Code 是当前最值得拆解的 coding agent 产品之一。推荐按"官方文档 → 复刻项目 → 架构解析 → 工程对照"的顺序学习：</p>
+<ol style="padding-left:20px;color:var(--text2);margin-bottom:16px;line-height:2">
+<li>读官方文档，理解 hooks、subagents、MCP、GitHub Actions、permissions。</li>
+<li>读公开分析论文，抽象出 agent harness 的设计空间。</li>
+<li>跟随 <a href="https://github.com/shareAI-lab/learn-claude-code" target="_blank">learn-claude-code</a> 从零复刻核心机制。</li>
+<li>对照 <a href="https://github.com/datawhalechina/hello-agents" target="_blank">hello-agents</a>、<a href="https://github.com/openclaw/openclaw" target="_blank">OpenClaw</a>、<a href="https://github.com/NousResearch/hermes-agent" target="_blank">Hermes Agent</a> 这些开源项目，学习工程化实现。</li>
+</ol>
+<div class="table-wrap"><table>
+<thead><tr><th>资源</th><th>重点</th></tr></thead>
+<tbody>
+<tr><td><a href="https://code.claude.com/docs/en/tutorials" target="_blank">Claude Code Common Workflows</a></td><td>官方工作流教程，适合学日常使用和项目协作。</td></tr>
+<tr><td><a href="https://code.claude.com/docs/en/overview" target="_blank">Claude Code Overview</a></td><td>官方入口，理解产品能力和命令行工作方式。</td></tr>
+<tr><td><a href="https://github.com/shareAI-lab/learn-claude-code" target="_blank">learn-claude-code</a></td><td>从零复刻 Claude Code-like agent，适合学 harness 最小实现。</td></tr>
+<tr><td><a href="https://claudecoding.dev/" target="_blank">Claude Code 源码解析</a></td><td>中文架构解读，适合按模块理解实现思路。</td></tr>
+<tr><td><a href="https://code.claudecn.com/" target="_blank">Claude Code 源码分析地图</a></td><td>用地图方式拆解 agent loop、工具、命令和多代理协作。</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2604.14228" target="_blank">Dive into Claude Code</a></td><td>从研究视角总结 Claude Code 的设计空间和 agent harness 模式。</td></tr>
+<tr><td><a href="https://arxiv.org/abs/2604.17460" target="_blank">Agentic Education</a></td><td>用 Claude Code 学 Claude Code 的交互式课程思路。</td></tr>
+</tbody>
+</table></div>
+</section>
+
+<section id="learning-principles">
+<h2><span class="icon">💡</span> Learning Principles · 学习原则</h2>
+<div class="card-grid">
+<div class="card"><h4>🏗 Build first, then read deeper.</h4><p>先动手构建，再深入阅读。</p></div>
+<div class="card"><h4>🎯 Prefer small reliable agents over impressive demos.</h4><p>优先小而可靠的 agent，而非华丽的 demo。</p></div>
+<div class="card"><h4>📐 Use tools with strict schemas.</h4><p>使用严格 schema 的工具。</p></div>
+<div class="card"><h4>🧪 Add evals before you add more agents.</h4><p>在加更多 agent 之前先加评测。</p></div>
+<div class="card"><h4>🔍 Trace every important run.</h4><p>每个重要运行都要 trace。</p></div>
+<div class="card"><h4>🤝 Treat multi-agent as a coordination problem.</h4><p>把多 agent 视为协调问题，而非魔法。</p></div>
+<div class="card"><h4>👤 Keep humans in the loop for risky actions.</h4><p>高风险操作保持人工介入。</p></div>
+<div class="card"><h4>🛡 Respect platform rules, copyrights, and data access boundaries.</h4><p>尊重平台规则、版权和数据访问边界。</p></div>
+</div>
+</section>
+
+<section id="contributing">
+<h2><span class="icon">🤝</span> Contributing · 参与贡献</h2>
+<p style="color:var(--text2);margin-bottom:16px">欢迎高质量贡献！本仓库是 README-first，最好的贡献是让学习路线更清晰的小改动。</p>
+
+<h4>✅ 欢迎的贡献</h4>
+<div class="card-grid">
+<div class="card"><h4>📄 官方资源</h4><p>添加官方文档、官方工程博客、论文、benchmark 或可运行的开源仓库。</p></div>
+<div class="card"><h4>✏️ 改进 todo</h4><p>让某个 todo 项更具体、更容易验证。</p></div>
+<div class="card"><h4>💡 项目创意</h4><p>添加有明确学习目标的小项目想法。</p></div>
+<div class="card"><h4>🔗 修复链接</h4><p>修复过时的链接，删除低质量或重复的资源。</p></div>
+</div>
+
+<h4>❌ 请避免</h4>
+<ul style="color:var(--text2);padding-left:20px;line-height:2">
+<li>复制社交平台的帖子</li>
+<li>添加没有实质内容的付费课程广告</li>
+<li>添加私人、付费或抓取内容</li>
+<li>添加鼓励绕过平台规则的资源</li>
+<li>把 README 变成巨大的链接堆</li>
+</ul>
+
+<h4>资源格式</h4>
+<pre style="background:var(--code-bg);padding:12px 16px;border-radius:var(--radius);font-size:13px;overflow-x:auto"><code>| [Title](https://example.com) | One sentence explaining why it matters. |</code></pre>
+
+<h4>质量标准自检</h4>
+<div class="card-grid">
+<div class="card"><h4>👤 学习者能用吗？</h4><p>今天就能上手使用？</p></div>
+<div class="card"><h4>🔒 来源可信吗？</h4><p>来源是否值得信赖？</p></div>
+<div class="card"><h4>🎓 教具体技能吗？</h4><p>是否教授具体的技能或概念？</p></div>
+<div class="card"><h4>📊 比已有内容更好吗？</h4><p>是否比已列出的链接更有用？</p></div>
+</div>
+</section>
+
+<footer class="footer">
+<p><strong>Agent Learning Hub</strong> — Datawhale 社区项目 ·
+<a href="https://github.com/datawhalechina/Agent-Learning-Hub" target="_blank">GitHub</a> ·
+<a href="https://github.com/datawhalechina/Agent-Learning-Hub/blob/main/LICENSE" target="_blank">MIT License</a></p>
+<p style="margin-top:8px">
+维护者：<a href="https://github.com/jjyaoao" target="_blank">陈思州 (jjyaoao)</a> ·
+网页版由 README.md 生成
+</p>
+</footer>
+
+</main>
+<script>
+function getTheme(){return localStorage.getItem('theme')||'light'}
+function setTheme(t){document.body.classList.toggle('dark',t==='dark');localStorage.setItem('theme',t)}
+function toggleTheme(){setTheme(getTheme()==='dark'?'light':'dark')}
+setTheme(getTheme());
+
+function saveTodos(){
+  var s={};
+  document.querySelectorAll('.todo-list input[type=checkbox]').forEach(function(cb){s[cb.id]=cb.checked});
+  localStorage.setItem('agent-hub-todos',JSON.stringify(s));
+}
+function loadTodos(){
+  try{
+    var s=JSON.parse(localStorage.getItem('agent-hub-todos')||'{}');
+    Object.keys(s).forEach(function(id){var cb=document.getElementById(id);if(cb)cb.checked=s[id]});
+  }catch(e){}
+}
+document.querySelectorAll('.todo-list input[type=checkbox]').forEach(function(cb){cb.addEventListener('change',saveTodos)});
+loadTodos();
+
+function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('overlay').classList.add('open')}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('open')}
+
+// Active nav
+var sections=document.querySelectorAll('section[id],h3[id]');
+var links=document.querySelectorAll('.sidebar a');
+window.addEventListener('scroll',function(){
+  document.getElementById('backTop').classList.toggle('visible',window.scrollY>500);
+  var cur='';
+  sections.forEach(function(s){if(window.scrollY>=s.offsetTop-120)cur=s.id});
+  links.forEach(function(a){a.classList.toggle('active',a.getAttribute('href')==='#'+cur)});
+});
+
+// Close sidebar on nav click (mobile)
+links.forEach(function(a){a.addEventListener('click',function(){if(window.innerWidth<=860)closeSidebar()})});
+</script>
+</body>
+</html>
